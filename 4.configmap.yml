@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: prasad
+  name: frontend
+data:
+  env: dev
+  URL: google.com

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment  # 1. Change from ReplicaSet to Deployment
+metadata:
+  namespace: prasad
+  name: frontend-deploy
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tir: web  # 2. Must match template labels exactly
+  template:
+    metadata:
+      labels:
+        tir: web  # 2. Same as selector
+    spec:
+      containers:
+        - name: nginx-rc
+          image: nginx
+          envFrom:
+            - configMapRef:
+                name: frontend
+          ports:
+            - containerPort: 80

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  namespace: prasad
+  name: frontend-rc
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tir: web
+  template:
+    metadata:
+      labels:
+        tir: web
+    spec:
+      containers:
+        - name: nginx-rc
+          image: nginx
+          envFrom:
+            - configMapRef:
+                name: frontend
+          ports:
+            - containerPort: 80
