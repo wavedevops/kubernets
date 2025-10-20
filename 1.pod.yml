@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: prasad
+  labels:
+    app: frontend
+    tier: web
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      ports:
+        - containerPort: 80
+      envFrom:
+        - configMapRef:
+            name: frontend
+      env:
+        - name: CUSTOM_ENV
+          value: production
+        - name: URL
+          valueFrom:
+            configMapKeyRef:
+              name: frontend
+              key: URL
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP  # Pod IP from Downward API
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: prasad
+  name: frontend
+data:
+  env: dev
+  URL: google.com
